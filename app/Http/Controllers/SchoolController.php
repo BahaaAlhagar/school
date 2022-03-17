@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\School;
 use Illuminate\Http\Request;
+use App\Http\Resources\SchoolResource;
 
 class SchoolController extends Controller
 {
@@ -14,7 +15,9 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        //
+        $schools = School::paginate();
+
+        return SchoolResource::collection($schools);
     }
 
     /**
