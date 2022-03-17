@@ -71,4 +71,27 @@ class StudentControllerTest extends TestCase
                 'name' => $school->name,
             ]);
     }
+
+    public function test_user_can_update_student()
+    {
+        $school = School::factory()->create();
+        $student = Student::factory()->create([
+            'school_id' => $school->id,
+        ]);
+
+        $newSchool = School::factory()->create();
+
+        $response = $this->apiSignIn()->patch(route('students.update', $student->id), [
+            'name' => 'new name',
+            'school_id' => $newSchool->id,
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJsonFragment([
+                'name' => 'new name',
+            ])
+            ->assertJsonFragment([
+                'name' => $newSchool->name,
+            ]);
+    }
 }

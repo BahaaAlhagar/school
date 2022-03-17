@@ -62,7 +62,10 @@ class StudentController extends Controller
      */
     public function update(StudentRequest $request, Student $student)
     {
-        //
+        $student->update($request->only('name', 'school_id'));
+        $student->load('school');
+
+        return new StudentResource($student);
     }
 
     /**
