@@ -53,7 +53,9 @@ class SchoolController extends Controller
      */
     public function update(SchoolRequest $request, School $school)
     {
-        //
+        $school->update($request->all());
+
+        return new SchoolResource($school);
     }
 
     /**

@@ -39,4 +39,22 @@ class SchoolControllerTest extends TestCase
                 'name' => 'test name',
             ]);
     }
+
+    public function test_user_can_update_school_details()
+    {
+        $school = School::factory()->create();
+
+        $this->assertNotEquals($school->name, 'new name');
+
+        $response = $this->apiSignIn()->patch(route('schools.update', $school->id), [
+            'name' => 'new name',
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJsonFragment([
+                'name' => 'new name',
+            ]);
+
+        $this->assertSame($school->fresh()->name, 'new name');
+    }
 }
