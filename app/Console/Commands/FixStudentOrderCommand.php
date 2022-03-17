@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\School;
 use App\Models\Student;
 use Illuminate\Console\Command;
+use App\Events\StudentOrderFixedEvent;
 
 class FixStudentOrderCommand extends Command
 {
@@ -38,6 +39,8 @@ class FixStudentOrderCommand extends Command
                 ]);
             }
         });
+
+        StudentOrderFixedEvent::dispatch();
 
         $this->comment('Student order is fixed!');
     }

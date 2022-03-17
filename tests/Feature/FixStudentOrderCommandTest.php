@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\School;
+use Illuminate\Support\Facades\Event;
+use App\Events\StudentOrderFixedEvent;
 
 class FixStudentOrderCommandTest extends TestCase
 {
@@ -14,6 +16,8 @@ class FixStudentOrderCommandTest extends TestCase
      */
     public function test_fix_student_order_command_works()
     {
+        Event::fake();
+
         $schools = School::factory()
             ->count(2)
             ->hasStudents(4)
@@ -33,5 +37,7 @@ class FixStudentOrderCommandTest extends TestCase
                 $this->assertSame($student->order, $index + 1);
             }
         }
+
+        Event::assertDispatched(StudentOrderFixedEvent::class);
     }
 }
