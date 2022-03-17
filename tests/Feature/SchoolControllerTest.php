@@ -4,12 +4,11 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\School;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SchoolControllerTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
 
     /**
      * A basic feature test example.

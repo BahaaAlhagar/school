@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Http\Resources\StudentResource;
 
 class StudentController extends Controller
 {
@@ -14,6 +15,11 @@ class StudentController extends Controller
      */
     public function index()
     {
+        $students = Student::with('school')
+            ->latest('id')
+            ->paginate();
+
+        return StudentResource::collection($students);
     }
 
     /**

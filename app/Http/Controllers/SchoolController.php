@@ -15,7 +15,7 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        $schools = School::paginate();
+        $schools = School::latest('id')->paginate();
 
         return SchoolResource::collection($schools);
     }
