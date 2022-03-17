@@ -69,4 +69,20 @@ class SchoolControllerTest extends TestCase
 
         $this->assertSame($school->fresh()->name, 'new name');
     }
+
+    public function test_user_can_delete_school()
+    {
+        $school = School::factory()->create();
+
+        $response = $this->apiSignIn()->delete(
+            route('schools.update', $school->id)
+        );
+
+        $response->assertStatus(200)
+            ->assertJsonFragment([
+                'name' => $school->name,
+            ]);
+
+        $this->assertSoftDeleted($school);
+    }
 }
