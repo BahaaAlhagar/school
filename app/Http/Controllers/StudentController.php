@@ -76,6 +76,8 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        //
+        $student->delete();
+
+        return new StudentResource($student);
     }
 }

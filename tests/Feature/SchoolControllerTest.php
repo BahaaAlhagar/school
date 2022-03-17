@@ -37,6 +37,8 @@ class SchoolControllerTest extends TestCase
             ->assertJsonFragment([
                 'name' => 'test name',
             ]);
+
+        $this->assertCount(1, School::pluck('id'));
     }
 
     public function test_user_can_show_school_details()
@@ -74,7 +76,7 @@ class SchoolControllerTest extends TestCase
         $school = School::factory()->create();
 
         $response = $this->apiSignIn()->delete(
-            route('schools.update', $school->id)
+            route('schools.destroy', $school->id)
         );
 
         $response->assertStatus(200)

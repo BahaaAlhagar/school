@@ -5,9 +5,12 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\School;
 use App\Models\Student;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class StudentControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * A basic feature test example.
      *
@@ -93,5 +96,24 @@ class StudentControllerTest extends TestCase
             ->assertJsonFragment([
                 'name' => $newSchool->name,
             ]);
+    }
+
+    public function test_user_can_delete_student()
+    {
+        $school = School::factory()->create();
+        $student = Student::factory()->create([
+            'school_id' => $school->id,
+        ]);
+
+        $response = $this->apiSignIn()->delete(
+            route('students.destroy', $student->id)
+        );
+
+        $response->assertStatus(200)
+            ->assertJsonFragment([
+                'name' => $student->name,
+            ]);
+
+        $this->assertSoftDeleted($student);
     }
 }
