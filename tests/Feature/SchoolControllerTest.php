@@ -40,6 +40,18 @@ class SchoolControllerTest extends TestCase
             ]);
     }
 
+    public function test_user_can_show_school_details()
+    {
+        $school = School::factory()->create();
+
+        $response = $this->apiSignIn()->get(route('schools.show', $school->id));
+
+        $response->assertStatus(200)
+            ->assertJsonFragment([
+                'name' => $school->name,
+            ]);
+    }
+
     public function test_user_can_update_school_details()
     {
         $school = School::factory()->create();
