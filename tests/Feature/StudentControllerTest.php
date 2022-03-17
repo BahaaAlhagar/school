@@ -53,4 +53,22 @@ class StudentControllerTest extends TestCase
                 'order' => 3,
             ]);
     }
+
+    public function test_user_can_show_student_details()
+    {
+        $school = School::factory()->create();
+        $student = Student::factory()->create([
+            'school_id' => $school->id,
+        ]);
+
+        $response = $this->apiSignIn()->get(route('students.show', $student->id));
+
+        $response->assertStatus(200)
+            ->assertJsonFragment([
+                'name' => $student->name,
+            ])
+            ->assertJsonFragment([
+                'name' => $school->name,
+            ]);
+    }
 }
