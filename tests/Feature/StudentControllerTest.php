@@ -30,4 +30,27 @@ class StudentControllerTest extends TestCase
                 'name' => $school->name,
             ]);
     }
+
+    public function test_user_can_store_student()
+    {
+        $school = School::factory()->create();
+
+        Student::factory()->state(
+            [
+                'school_id' => $school->id,
+            ]
+        )->count(2)->create();
+
+        $response = $this->apiSignIn()->post(route('students.store'), [
+            'name' => 'test name',
+            'school_id' => $school->id,
+        ]);
+
+        $response->assertStatus(201)
+            ->assertJsonFragment([
+                'name' => 'test name',
+                'school_id' => $school->id,
+                'order' => 3,
+            ]);
+    }
 }

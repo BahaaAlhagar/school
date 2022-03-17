@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
-use Illuminate\Http\Request;
+use App\Http\Requests\StudentRequest;
 use App\Http\Resources\StudentResource;
 
 class StudentController extends Controller
@@ -28,9 +28,16 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StudentRequest $request)
     {
-        //
+        $student = Student::create(array_merge(
+            $request->all(),
+            [
+                'order' => Student::where('school_id', $request->school_id)->count() + 1,
+            ]
+        ));
+
+        return new StudentResource($student);
     }
 
     /**
@@ -51,7 +58,7 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Student $student)
+    public function update(StudentRequest $request, Student $student)
     {
         //
     }
