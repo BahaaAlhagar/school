@@ -6,9 +6,12 @@ use Tests\TestCase;
 use App\Models\School;
 use Illuminate\Support\Facades\Event;
 use App\Events\StudentOrderFixedEvent;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FixStudentOrderCommandTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * A basic feature test example.
      *
@@ -34,7 +37,7 @@ class FixStudentOrderCommandTest extends TestCase
 
         foreach ($schools as $school) {
             foreach ($school->students as $index => $student) {
-                $this->assertSame($student->order, $index + 1);
+                $this->assertSame((int) $student->order, $index + 1);
             }
         }
 
